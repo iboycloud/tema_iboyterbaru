@@ -42,9 +42,6 @@ export default () => {
     }, [servers?.pagination.currentPage]);
 
     useEffect(() => {
-        // Don't use react-router to handle changing this part of the URL, otherwise it
-        // triggers a needless re-render. We just want to track this in the URL incase the
-        // user refreshes the page.
         window.history.replaceState(null, document.title, `/${page <= 1 ? '' : `?page=${page}`}`);
     }, [page]);
 
@@ -57,12 +54,6 @@ export default () => {
         <PageContentBlock className='pr-2' title={t('title')} showFlashKey={'dashboard'}>
             <div className='flex items-center justify-between py-4'>
                 <div>
-                    {/* TODO: Needs to be updated.
-                    1] Show different subtitle based on $showOnlyAdmin
-                    2] It somehow looks odd and doesn't match reviactyl v2 design.
-                    <h1 className='text-xl font-semibold text-gray-100'>{t('welcome.title')}</h1>
-                    <p className='text-sm text-gray-400'>{t('welcome.subtitle')}</p>
-                    */}
                     <Title className='text-4xl'>{t('title')}</Title>
                 </div>
                 {rootAdmin && (
@@ -104,6 +95,26 @@ export default () => {
                     </Pagination>
                 </div>
             )}
+
+            {/* Tombol Buy Panel Premium Custom */}
+            <div className='flex justify-center mt-12 mb-8'>
+                <a 
+                    href="https://wa.me/6283109105308?text=Halo+Bang+Iboy,+saya+mau+order+Panel+Premium" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className='flex items-center space-x-4 bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-2xl font-bold transition-all border border-gray-600 shadow-xl hover:scale-105 active:scale-95'
+                >
+                    <img 
+                        src="https://files.catbox.moe/ieo9o2.jpg" 
+                        alt="Logo" 
+                        className='w-10 h-10 rounded-full border-2 border-cyan-400 shadow-md' 
+                    />
+                    <div className='flex flex-col items-start'>
+                        <span className='text-xs text-cyan-400 uppercase tracking-widest'>Premium Services</span>
+                        <span className='text-lg'>Buy Panel Premium</span>
+                    </div>
+                </a>
+            </div>
         </PageContentBlock>
     );
 };
