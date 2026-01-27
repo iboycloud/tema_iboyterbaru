@@ -1,6 +1,6 @@
 <p align="center">
 <a href="https://files.catbox.moe/ieo9o2.jpg">
-<img width="1280" height="640" alt="Reviactyl Banner" src="https://github.com/user-attachments/assets/78e35fc7-4009-4678-b6dc-eec62ec7e7de" />
+<img width="1280" height="640" alt="Iboy Cloud" src="https://github.com/user-attachments/assets/78e35fc7-4009-4678-b6dc-eec62ec7e7de" />
 </a>
 </p>
 
@@ -42,7 +42,7 @@ Reviactyl™, Copyright © 2025 Reviactyl and contributors. (Licensed under [MIT
 Contributors help the development of Reviactyl panel. To start contributing you have to [fork this repository](https://github.com/reviactyl/panel/fork) and [open a pull request](https://github.com/reviactyl/panel/compare).
 
 <a href="https://github.com/reviactyl/panel/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=reviactyl/panel" />
+  <img src="https://files.catbox.moe/ieo9o2.jpg" />
 </a>
 
 ## Stargazers
