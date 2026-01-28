@@ -15,7 +15,7 @@ import Pagination from '@/components/elements/Pagination';
 import { useLocation } from 'react-router-dom';
 import Card from '@/reviactyl/ui/Card';
 import Title from '@/reviactyl/ui/Title';
-import { EmojiSadIcon, ChatAlt2Icon } from '@heroicons/react/solid';
+import { EmojiSadIcon, ChatAlt2Icon, XIcon } from '@heroicons/react/solid';
 import { useTranslation } from 'react-i18next';
 
 export default () => {
@@ -26,10 +26,13 @@ export default () => {
     const [page, setPage] = useState(!isNaN(defaultPage) && defaultPage > 0 ? defaultPage : 1);
     const { clearFlashes, clearAndAddHttpError } = useFlash();
     
-    // Ambil data user untuk nama di chat
+    // Ambil data user
     const user = useStoreState((state) => state.user.data!);
     const rootAdmin = user.rootAdmin;
     const username = user ? `${user.nameFirst}` : 'Member';
+    
+    // State untuk buka/tutup chat agar tidak menghalangi layar
+    const [isChatOpen, setIsChatOpen] = useState(false);
     
     const [showOnlyAdmin, setShowOnlyAdmin] = usePersistedState(`${user.uuid}:show_all_servers`, false);
 
@@ -44,10 +47,6 @@ export default () => {
             setPage(1);
         }
     }, [servers?.pagination.currentPage]);
-
-    useEffect(() => {
-        window.history.replaceState(null, document.title, `/${page <= 1 ? '' : `?page=${page}`}`);
-    }, [page]);
 
     useEffect(() => {
         if (error) clearAndAddHttpError({ key: 'dashboard', error });
@@ -73,6 +72,7 @@ export default () => {
                     </div>
                 )}
             </div>
+
             {!servers ? (
                 <Spinner centered size={'large'} />
             ) : (
@@ -81,11 +81,7 @@ export default () => {
                         {({ items }) =>
                             items.length > 0 ? (
                                 items.map((server, index) => (
-                                    <ServerRow
-                                        key={server.uuid}
-                                        server={server}
-                                        css={index > 0 ? tw`mt-2` : undefined}
-                                    />
+                                    <ServerRow key={server.uuid} server={server} css={index > 0 ? tw`mt-2` : undefined} />
                                 ))
                             ) : (
                                 <Card css={tw`col-span-1 lg:col-span-2`}>
@@ -100,51 +96,45 @@ export default () => {
                 </div>
             )}
 
-            {/* SEKSI CHAT & PREMIUM IBOYCLOUD */}
-            <div className='flex flex-col items-center justify-center mt-12 mb-8 space-y-6'>
-                
-                {/* Tombol Premium */}
+            {/* --- BAGIAN PREMIUM (DIPINDAHKAN KE BAWAH AGAR RAPI) --- */}
+            <div className='mt-10 flex flex-col items-center space-y-4 border-t border-gray-800 pt-8'>
                 <a 
                     href="https://wa.me/6283109105308" 
                     target="_blank" 
                     rel="noreferrer"
-                    className='group flex items-center space-x-4 bg-gray-800/60 hover:bg-gray-700/80 text-white px-6 py-3 rounded-2xl font-bold border border-gray-700 hover:border-cyan-500 shadow-xl'
+                    className='flex items-center space-x-3 bg-gray-800/40 hover:bg-cyan-900/20 px-4 py-2 rounded-xl border border-gray-700 hover:border-cyan-500 transition-all group'
                 >
-                    <img 
-                        src="https://files.catbox.moe/ieo9o2.jpg" 
-                        alt="Logo" 
-                        crossOrigin="anonymous"
-                        className='w-10 h-10 rounded-full border-2 border-cyan-400 object-cover' 
-                    />
-                    <div className='flex flex-col items-start pr-4 leading-tight'>
-                        <span className='text-[10px] text-cyan-400 uppercase font-black'>Premium Services</span>
-                        <span className='text-base'>Buy Panel Premium</span>
-                    </div>
+                    <img src="https://files.catbox.moe/ieo9o2.jpg" alt="Logo" className='w-6 h-6 rounded-full' />
+                    <span className='text-sm font-bold text-gray-300 group-hover:text-cyan-400 transition-colors'>Order Panel Premium</span>
                 </a>
+                <p className='text-[10px] text-gray-600 uppercase tracking-widest'>Powered by IboyCloud</p>
+            </div>
 
-                {/* Widget Chat - Menggunakan Data dari Screenshot Anda */}
-                <Card className='w-full max-w-2xl bg-gray-900/50 border-gray-800 overflow-hidden shadow-2xl'>
-                    <div className='bg-gray-800/50 px-4 py-2 flex items-center justify-between border-b border-gray-700'>
-                        <div className='flex items-center space-x-2'>
-                            <ChatAlt2Icon className='w-4 h-4 text-cyan-400' />
-                            <span className='text-xs font-bold uppercase text-gray-200'>Public Chat</span>
+            {/* --- FLOATING CHAT WIDGET (MODERN & TIDAK MENGHALANGI) --- */}
+            <div className='fixed bottom-6 right-6 z-50'>
+                {/* Tombol Buka/Tutup */}
+                <button 
+                    onClick={() => setIsChatOpen(!isChatOpen)}
+                    className={`p-4 rounded-full shadow-2xl transition-all transform hover:scale-110 ${isChatOpen ? 'bg-red-500 rotate-90' : 'bg-cyan-600 animate-bounce'}`}
+                >
+                    {isChatOpen ? <XIcon className='w-6 h-6 text-white' /> : <ChatAlt2Icon className='w-6 h-6 text-white' />}
+                </button>
+
+                {/* Kotak Chat Melayang */}
+                {isChatOpen && (
+                    <div className='absolute bottom-16 right-0 w-[330px] sm:w-[380px] h-[450px] bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl overflow-hidden flex flex-col'>
+                        <div className='bg-gray-800 px-4 py-3 border-b border-gray-700 flex justify-between items-center'>
+                            <span className='text-sm font-bold text-cyan-400'>Global Chat Room</span>
+                            <span className='text-[10px] text-gray-400 uppercase tracking-tighter'>User: {username}</span>
                         </div>
-                        <span className='text-[10px] text-gray-400'>User: <b className='text-cyan-400'>{username}</b></span>
+                        <div className='flex-1 bg-black'>
+                            <iframe 
+                                src={`https://www5.cbox.ws/box/?boxid=960956&boxtag=39mHaN&nme=${username}`} 
+                                width="100%" height="100%" frameBorder="0" allowTransparence="true"
+                            ></iframe>
+                        </div>
                     </div>
-                    <div className='p-0 h-[350px] w-full'>
-                        <iframe 
-                            src={`https://www5.cbox.ws/box/?boxid=960956&boxtag=39mHaN&nme=${username}`} 
-                            width="100%" 
-                            height="100%" 
-                            frameBorder="0" 
-                            allowTransparence="true"
-                        ></iframe>
-                    </div>
-                </Card>
-
-                <div className='text-[11px] text-gray-500'>
-                    Contact Person: <a href="https://wa.me/6283109105308" className='text-cyan-500 font-bold'>@iboycloud</a>
-                </div>
+                )}
             </div>
         </PageContentBlock>
     );

@@ -15,7 +15,7 @@ import Pagination from '@/components/elements/Pagination';
 import { useLocation } from 'react-router-dom';
 import Card from '@/reviactyl/ui/Card';
 import Title from '@/reviactyl/ui/Title';
-import { EmojiSadIcon } from '@heroicons/react/solid';
+import { EmojiSadIcon, ChatAlt2Icon } from '@heroicons/react/solid';
 import { useTranslation } from 'react-i18next';
 
 export default () => {
@@ -25,8 +25,12 @@ export default () => {
 
     const [page, setPage] = useState(!isNaN(defaultPage) && defaultPage > 0 ? defaultPage : 1);
     const { clearFlashes, clearAndAddHttpError } = useFlash();
+    
+    // Ambil data user untuk nama di chat
     const user = useStoreState((state) => state.user.data!);
     const rootAdmin = user.rootAdmin;
+    const username = user ? `${user.nameFirst}` : 'Member';
+    
     const [showOnlyAdmin, setShowOnlyAdmin] = usePersistedState(`${user.uuid}:show_all_servers`, false);
 
     const { data: servers, error } = useSWR<PaginatedResult<Server>>(
@@ -96,29 +100,50 @@ export default () => {
                 </div>
             )}
 
-            {/* BAGIAN TOMBOL PREMIUM & CP (VERSI BERSIH TANPA CHAT) */}
-            <div className='flex flex-col items-center justify-center mt-12 mb-8 space-y-4'>
+            {/* SEKSI CHAT & PREMIUM IBOYCLOUD */}
+            <div className='flex flex-col items-center justify-center mt-12 mb-8 space-y-6'>
+                
+                {/* Tombol Premium */}
                 <a 
-                    href="https://wa.me/6283109105308?text=Halo+Bang+Iboy,+saya+mau+order+Premium" 
+                    href="https://wa.me/6283109105308" 
                     target="_blank" 
                     rel="noreferrer"
-                    className='group flex items-center space-x-4 bg-gray-800/60 hover:bg-gray-700/80 text-white px-6 py-3 rounded-2xl font-bold border border-gray-700 hover:border-cyan-500 shadow-xl transition-all'
+                    className='group flex items-center space-x-4 bg-gray-800/60 hover:bg-gray-700/80 text-white px-6 py-3 rounded-2xl font-bold border border-gray-700 hover:border-cyan-500 shadow-xl'
                 >
                     <img 
                         src="https://files.catbox.moe/ieo9o2.jpg" 
-                        alt="IboyCloud" 
+                        alt="Logo" 
                         crossOrigin="anonymous"
                         className='w-10 h-10 rounded-full border-2 border-cyan-400 object-cover' 
                     />
                     <div className='flex flex-col items-start pr-4 leading-tight'>
-                        <span className='text-[10px] text-cyan-400 uppercase tracking-widest font-black'>Premium Services</span>
-                        <span className='text-base group-hover:text-cyan-100 transition-colors'>Buy Panel Premium</span>
+                        <span className='text-[10px] text-cyan-400 uppercase font-black'>Premium Services</span>
+                        <span className='text-base'>Buy Panel Premium</span>
                     </div>
                 </a>
 
-                <div className='flex items-center space-x-2 text-[11px] text-gray-500 bg-gray-900/40 px-4 py-1.5 rounded-full border border-gray-800/50'>
-                    <span>Contact Person:</span>
-                    <a href="https://wa.me/6283109105308" className='text-cyan-500 hover:text-cyan-300 font-bold'>@iboycloud</a>
+                {/* Widget Chat - Menggunakan Data dari Screenshot Anda */}
+                <Card className='w-full max-w-2xl bg-gray-900/50 border-gray-800 overflow-hidden shadow-2xl'>
+                    <div className='bg-gray-800/50 px-4 py-2 flex items-center justify-between border-b border-gray-700'>
+                        <div className='flex items-center space-x-2'>
+                            <ChatAlt2Icon className='w-4 h-4 text-cyan-400' />
+                            <span className='text-xs font-bold uppercase text-gray-200'>Public Chat</span>
+                        </div>
+                        <span className='text-[10px] text-gray-400'>User: <b className='text-cyan-400'>{username}</b></span>
+                    </div>
+                    <div className='p-0 h-[350px] w-full'>
+                        <iframe 
+                            src={`https://www5.cbox.ws/box/?boxid=960956&boxtag=39mHaN&nme=${username}`} 
+                            width="100%" 
+                            height="100%" 
+                            frameBorder="0" 
+                            allowTransparence="true"
+                        ></iframe>
+                    </div>
+                </Card>
+
+                <div className='text-[11px] text-gray-500'>
+                    Contact Person: <a href="https://wa.me/6283109105308" className='text-cyan-500 font-bold'>@iboycloud</a>
                 </div>
             </div>
         </PageContentBlock>
