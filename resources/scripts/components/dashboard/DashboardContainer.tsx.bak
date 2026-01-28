@@ -96,8 +96,8 @@ export default () => {
                 </div>
             )}
 
-            {/* Tombol Buy Panel Premium & Contact Person */}
-            <div className='flex flex-col items-center justify-center mt-12 mb-8 space-y-3'>
+            {/* Tombol Buy Panel Premium - Versi Slim Center */}
+            <div className='flex justify-center w-full mt-12 mb-8'>
                 <a 
                     href="https://wa.me/6283109105308?text=Halo+Bang+Iboy,+saya+mau+order+Panel+Premium" 
                     target="_blank" 
@@ -118,12 +118,6 @@ export default () => {
                         <span className='text-base group-hover:text-cyan-100 transition-colors'>Buy Panel Premium</span>
                     </div>
                 </a>
-                
-                {/* Contact Person Text */}
-                <div className='flex items-center space-x-2 text-xs text-gray-400 bg-gray-900/30 px-4 py-1.5 rounded-full border border-gray-800'>
-                    <span>Contact Person:</span>
-                    <a href="https://wa.me/6283109105308" className='text-cyan-400 hover:text-cyan-300 font-bold transition-colors'>@iboycloud</a>
-                </div>
             </div>
         </PageContentBlock>
     );
