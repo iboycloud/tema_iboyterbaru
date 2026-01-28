@@ -26,7 +26,7 @@ export default () => {
     const [page, setPage] = useState(!isNaN(defaultPage) && defaultPage > 0 ? defaultPage : 1);
     const { clearFlashes, clearAndAddHttpError } = useFlash();
     
-    // Mengambil data user untuk identitas Chat
+    // Identitas User untuk Chat
     const user = useStoreState((state) => state.user.data!);
     const rootAdmin = user.rootAdmin;
     const username = user ? `${user.nameFirst}` : 'Member';
@@ -100,54 +100,47 @@ export default () => {
                 </div>
             )}
 
-            {/* --- SEKSI KUSTOM IBOYCLOUD --- */}
+            {/* SEKSI IBOYCLOUD */}
             <div className='flex flex-col items-center justify-center mt-12 mb-8 space-y-6'>
-                
-                {/* Tombol Premium */}
+                {/* Tombol Buy Premium */}
                 <a 
-                    href="https://wa.me/6283109105308?text=Halo+Bang+Iboy,+saya+mau+order+Panel+Premium" 
+                    href="https://wa.me/6283109105308" 
                     target="_blank" 
                     rel="noreferrer"
-                    className='group flex items-center space-x-4 bg-gray-800/60 hover:bg-gray-700/80 text-white px-6 py-3 rounded-2xl font-bold transition-all border border-gray-700 hover:border-cyan-500 shadow-xl'
+                    className='group flex items-center space-x-4 bg-gray-800/60 hover:bg-gray-700/80 text-white px-6 py-3 rounded-2xl font-bold border border-gray-700 hover:border-cyan-500 shadow-xl'
                 >
-                    <div className='relative'>
-                        <img 
-                            src="https://files.catbox.moe/ieo9o2.jpg" 
-                            alt="Logo" 
-                            crossOrigin="anonymous"
-                            className='w-10 h-10 rounded-full border-2 border-cyan-400 object-cover' 
-                        />
-                        <div className='absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-gray-900 rounded-full'></div>
-                    </div>
-                    <div className='flex flex-col items-start leading-tight pr-4'>
-                        <span className='text-[10px] text-cyan-400 uppercase tracking-widest font-black'>Premium Services</span>
-                        <span className='text-base group-hover:text-cyan-100 transition-colors'>Buy Panel Premium</span>
+                    <img 
+                        src="https://files.catbox.moe/ieo9o2.jpg" 
+                        alt="Logo" 
+                        crossOrigin="anonymous"
+                        className='w-10 h-10 rounded-full border-2 border-cyan-400 object-cover' 
+                    />
+                    <div className='flex flex-col items-start pr-4'>
+                        <span className='text-[10px] text-cyan-400 uppercase font-black'>Premium Services</span>
+                        <span className='text-base'>Buy Panel Premium</span>
                     </div>
                 </a>
 
-                {/* Chat Member Only */}
+                {/* Widget Chat Public */}
                 <Card className='w-full max-w-2xl bg-gray-900/50 border-gray-800 overflow-hidden shadow-2xl'>
                     <div className='bg-gray-800/50 px-4 py-2 flex items-center justify-between border-b border-gray-700'>
                         <div className='flex items-center space-x-2'>
                             <ChatAlt2Icon className='w-4 h-4 text-cyan-400' />
-                            <span className='text-xs font-bold uppercase tracking-wider text-gray-200'>Member Chat</span>
+                            <span className='text-xs font-bold uppercase text-gray-200'>Global Chat</span>
                         </div>
-                        <span className='text-[10px] text-gray-400'>Username: <b className='text-cyan-400'>{username}</b></span>
+                        <span className='text-[10px] text-gray-400'>Logged in as: <b className='text-cyan-400'>{username}</b></span>
                     </div>
                     <div className='p-0 h-[350px] w-full'>
                         <iframe 
                             src={`https://www3.cbox.ws/box/?boxid=3534572&boxtag=iboycloud&nme=${username}`} 
-                            width="100%" height="100%" frameBorder="0" allowTransparence="true" className='rounded-b-xl'
+                            width="100%" height="100%" frameBorder="0" allowTransparence="true"
                         ></iframe>
                     </div>
                 </Card>
 
-                {/* Contact Person */}
-                <div className='flex items-center space-x-2 text-[11px] text-gray-500 bg-gray-900/40 px-4 py-1.5 rounded-full border border-gray-800/50'>
-                    <span className='uppercase tracking-tighter'>Contact Person:</span>
-                    <a href="https://wa.me/6283109105308" className='text-cyan-500 hover:text-cyan-300 font-bold'>@iboycloud</a>
+                <div className='text-[11px] text-gray-500'>
+                    Contact Person: <a href="https://wa.me/6283109105308" className='text-cyan-500 font-bold'>@iboycloud</a>
                 </div>
-
             </div>
         </PageContentBlock>
     );
