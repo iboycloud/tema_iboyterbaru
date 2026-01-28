@@ -1,25 +1,29 @@
 #!/bin/bash
-# Script Auto Update, Fix Error, & Build IboyCloud
+# Script Gabungan: Fix Error, Build, & Clear Cache PHP
 
-echo "--- [1/4] Menarik file terbaru dari GitHub ---"
-git pull origin master
+echo "--- [1/4] Menarik Update Terbaru dari GitHub ---"
+# Jika di VPS bukan git repo, script akan tetap lanjut
+git pull origin master || echo "Bukan git repository, melewati pull..."
 
-echo "--- [2/4] Memperbaiki Dependencies (Fix Cross-Env & Webpack) ---"
-# Menginstall komponen yang hilang berdasarkan error di terminal
+echo "--- [2/4] Memperbaiki Komponen (Fix Cross-Env & Webpack) ---"
+# Mengatasi error 'cross-env: not found'
 npm install -g cross-env
-npm install
-npm install --save-dev webpack-cli
+# Mengatasi error 'spawn ENOENT' dengan paksa
+npm install --production --force
+npm link cross-env
 
-echo "--- [3/4] Memulai Proses Build ---"
-# Menghapus aset lama agar tidak bentrok
+echo "--- [3/4] Memulai Proses Build Tampilan (Wajib Tunggu) ---"
+# Menghapus aset lama agar build baru bersih
 rm -rf public/assets/*.js public/assets/*.css public/assets/*.map
 yarn build:production
 
-echo "--- [4/4] Membersihkan Cache ---"
-php artisan view:clear && php artisan cache:clear
+echo "--- [4/4] Membersihkan Cache PHP (Artisan Clear) ---"
+# Ini adalah daftar perintah clear PHP yang tadi Anda tanyakan
+php artisan view:clear
+php artisan cache:clear
+php artisan config:clear
 php artisan optimize:clear
 
 echo "=========================================="
-echo "DONE! Tampilan sudah diperbarui."
-echo "Silakan refresh panel Anda (Gunakan Incognito jika perlu)."
+echo "   DONE! PROSES SELESAI SECARA TOTAL    "
 echo "=========================================="
