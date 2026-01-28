@@ -1,29 +1,25 @@
-#!/bash
-# Script Auto Install & Build Tema IboyCloud
+#!/bin/bash
+# Script Auto Update, Fix Error, & Build IboyCloud
 
-GREEN='\033[0;32m'
-CYAN='\033[0;36m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
+echo "--- [1/4] Menarik file terbaru dari GitHub ---"
+git pull origin master
 
-echo -e "${CYAN}=====================================${NC}"
-echo -e "${CYAN}   AUTO INSTALL & BUILD IBOYCLOUD   ${NC}"
-echo -e "${CYAN}=====================================${NC}"
+echo "--- [2/4] Memperbaiki Dependencies (Fix Cross-Env & Webpack) ---"
+# Menginstall komponen yang hilang berdasarkan error di terminal
+npm install -g cross-env
+npm install
+npm install --save-dev webpack-cli
 
-echo -e "${YELLOW}[1/3] Menarik file terbaru dari GitHub...${NC}"
-# Masukkan perintah git pull atau download file di sini
-# git pull origin master
-
-echo -e "${YELLOW}[2/3] Memulai Proses Build (yarn build:production)...${NC}"
-echo -e "${CYAN}Mohon tunggu, ini butuh waktu 1-2 menit...${NC}"
+echo "--- [3/4] Memulai Proses Build ---"
+# Menghapus aset lama agar tidak bentrok
+rm -rf public/assets/*.js public/assets/*.css public/assets/*.map
 yarn build:production
 
-echo -e "${YELLOW}[3/3] Membersihkan Cache Sistem...${NC}"
-php artisan view:clear
-php artisan cache:clear
-php artisan config:clear
+echo "--- [4/4] Membersihkan Cache ---"
+php artisan view:clear && php artisan cache:clear
 php artisan optimize:clear
 
-echo -e "${GREEN}=====================================${NC}"
-echo -e "${GREEN}  PROSES SELESAI! PANEL SUDAH SIAP  ${NC}"
-echo -e "${GREEN}=====================================${NC}"
+echo "=========================================="
+echo "DONE! Tampilan sudah diperbarui."
+echo "Silakan refresh panel Anda (Gunakan Incognito jika perlu)."
+echo "=========================================="
